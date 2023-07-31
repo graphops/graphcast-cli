@@ -1,0 +1,13 @@
+.envrc
+.env
+/target
+/.idea
+/.fleet
+/integration-tests/target
+logs
+boot_node_addr.conf
+data
+*.swp
+.vscode
+*.json
+.DS_Store
