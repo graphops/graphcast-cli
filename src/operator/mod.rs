@@ -33,7 +33,7 @@ impl RadioOperator {
                 .expect("Initialize Graphcast agent");
         let graphcast_agent = Arc::new(agent);
         // Provide topics to Graphcast agent
-        let topics = vec![config.identifier.clone()];
+        let topics = vec![config.message().identifier.clone()];
         debug!(
             topics = tracing::field::debug(&topics),
             "Found content topics for subscription",
@@ -56,7 +56,8 @@ impl RadioOperator {
     pub async fn run(&'static self) {
         let mut current_attempt: u64 = 0;
         let mut res = self.gossip_one_shot().await;
-        while current_attempt < self.config.max_retry && res.is_err() {
+        // Try again if the gossip failed to send while the attempt number is within max_retry
+        while res.is_err() && current_attempt < self.config.message().max_retry {
             warn!(
                 err = tracing::field::debug(&res),
                 current_attempt, "Failed to gossip, retry"

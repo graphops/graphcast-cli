@@ -23,7 +23,7 @@ To send a message on Graphcast mainnet for the subgraph deployment "QmacQnSgia4i
 cargo run -- --private-key "abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg1" \
 --graph-account "0xe9a1cabd57700b17945fd81feefba82340d9568f" \
 --identifier "QmacQnSgia4iDPWHpeY6aWxesRFdb8o5DKZUx96zZqEWrB" \
---new-hash "QmTHIS_NEW_HASH" \
+--new-hash "QmVVfLWowm1xkqc41vcygKNwFUvpsDSMbHdHghxmDVmH9x" \
 --subgraph-id "CnJMdCkW3pr619gsJVtUPAWxspALPdCMw6o7obzYBNp3" \
 --index-network "goerli" \
 --migration-time 1689205934

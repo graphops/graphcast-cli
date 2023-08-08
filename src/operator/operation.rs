@@ -9,13 +9,13 @@ use crate::operator::RadioOperator;
 impl RadioOperator {
     pub async fn gossip_one_shot(&self) -> Result<String, GraphcastAgentError> {
         // configure radio config to parse in a subcommand for the radio payload message?
-        let identifier = self.config.identifier.clone();
-        let new_hash = self.config.new_hash.clone();
-        let subgraph_id = self.config.subgraph_id.clone();
+        let identifier = self.config.message().identifier.clone();
+        let new_hash = self.config.message().new_hash.clone();
+        let subgraph_id = self.config.message().subgraph_id.clone();
         let time = Utc::now().timestamp();
-        let network = self.config.index_network();
-        let migrate_time = self.config.migration_time;
-        let graph_account = self.config.graph_account.clone();
+        let network = &self.config.message().index_network;
+        let migrate_time = self.config.message().migration_time;
+        let graph_account = self.config.graph_stack().graph_account.clone();
         let radio_message = VersionUpgradeMessage::build(
             identifier.clone(),
             new_hash.clone(),

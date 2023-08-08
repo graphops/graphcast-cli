@@ -10,7 +10,8 @@ keywords = ["graphprotocol", "data-integrity", "Indexer", "waku", "p2p"]
 categories = ["network-programming", "web-programming::http-client"]
 
 [dependencies]
-graphcast-sdk = "0.4.0"
+# graphcast-sdk = "0.4.0"
+graphcast-sdk = { git = "https://github.com/graphops/graphcast-sdk", branch = "hope/config-refactor" }
 once_cell = "1.17"
 chrono = "0.4"
 serde = { version = "1.0.163", features = ["rc"] }
@@ -22,14 +23,7 @@ thiserror = "1.0.40"
 ethers = "2.0.4"
 dotenv = "0.15"
 tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = [
-    "env-filter",
-    "ansi",
-    "fmt",
-    "std",
-    "json",
-] }
-clap = { version = "3.2.25", features = ["derive", "env"] }
+clap = { version = "4.3.1", features = ["derive", "env"] }
 prost = "0.11"
 ethers-contract = "2.0.4"
 ethers-core = "2.0.4"
