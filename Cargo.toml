@@ -10,8 +10,7 @@ keywords = ["graphprotocol", "data-integrity", "Indexer", "waku", "p2p"]
 categories = ["network-programming", "web-programming::http-client"]
 
 [dependencies]
-# graphcast-sdk = "0.4.0"
-graphcast-sdk = { git = "https://github.com/graphops/graphcast-sdk", branch = "hope/config-refactor" }
+graphcast-sdk = { git = "https://github.com/graphops/graphcast-sdk", branch = "hope/auto-resolve-latest-hash" }
 once_cell = "1.17"
 chrono = "0.4"
 serde = { version = "1.0.163", features = ["rc"] }
