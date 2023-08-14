@@ -5,28 +5,25 @@
 
 ## Introduction
 
-This is a Graphcast Radio focused on sending a single message about particular subgraphs on Graphcast P2P network. The available message type is a version upgrade annoucement message from a subgraph owner.
+This is a Graphcast Radio focused on sending a single message about particular subgraphs on Graphcast P2P network. The available message type is `UpgradeIntentMessage` from a subgraph owner.
 
-### Version Upgrade message
+### Upgrade Pre-sync
 
-When developers publish a new version (subgraph deployment) to their subgraph, data service instability may occur while their API queries the pre-existing version. Indexers may require some time to sync a subgraph to the chainhead after they have stopped syncing the previous deployment. To decrease the upgrade friction, developers can send a message before publishing the subgraph, including the old deployment hash, new deployment hash, matching subgraph id, the time they would like to publish the version. 
+When developers publish a new version (subgraph deployment) to their subgraph, data service instability may occur while their API queries the pre-existing version. Indexers may require some time to sync a subgraph to the chainhead after they have stopped syncing the previous deployment. To decrease the upgrade friction, developers can send a message before publishing the subgraph on current deployment hash's Graphcast channel, which includes the subgraph id, corresponding new deployment hash, and the represented graph account that must be validated to be the subgraph's owner. 
 
-Subgraph radios subscribed to the same topic and process this information immediately, potentially start offchain syncing the new deployment in their graph node. 
+Indexers running the subgraph radio and listening to that channel will in turn receive the message and potentially start to offchain new deployment.
 
 It is still at the subgraph developers' discretion to await for the indexers to sync upto chainhead, in which point they can publish the staged version without disrupting API usage.
 
 ## 🆙 Example usage
 
-To send a message on Graphcast mainnet for the subgraph deployment "QmacQnSgia4iDPWHpeY6aWxesRFdb8o5DKZUx96zZqEWrB", we can 
+To send a message on Graphcast mainnet for the subgraph deployment "QmacQnSgia4iDPWHpeY6aWxesRFdb8o5DKZUx96zZqEWrB", we would need its subgraph id "CnJMdCkW3pr619gsJVtUPAWxspALPdCMw6o7obzYBNp3", private key to the graph account or an operator of the graph account, the subgraph owner's graph account, and the new deployment hash. You can supply them as an CLI argument
 
 ```
 cargo run -- --private-key "abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg1" \
 --graph-account "0xe9a1cabd57700b17945fd81feefba82340d9568f" \
---identifier "QmacQnSgia4iDPWHpeY6aWxesRFdb8o5DKZUx96zZqEWrB" \
 --new-hash "QmVVfLWowm1xkqc41vcygKNwFUvpsDSMbHdHghxmDVmH9x" \
---subgraph-id "CnJMdCkW3pr619gsJVtUPAWxspALPdCMw6o7obzYBNp3" \
---index-network "goerli" \
---migration-time 1689205934
+--subgraph-id "CnJMdCkW3pr619gsJVtUPAWxspALPdCMw6o7obzYBNp3"
 ```
 
 The entire process from running the binary to sending the message should take ~45 seconds. One can expect the terminal to output the following:

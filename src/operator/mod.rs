@@ -1,7 +1,8 @@
+use graphcast_sdk::graphql::client_graph_account::subgraph_hash_by_id;
 use std::sync::Arc;
 use tracing::{debug, warn};
 
-use graphcast_sdk::{build_wallet, graphcast_agent::GraphcastAgent};
+use graphcast_sdk::graphcast_agent::GraphcastAgent;
 
 use crate::config::Config;
 use crate::GRAPHCAST_AGENT;
@@ -19,12 +20,14 @@ impl RadioOperator {
     /// graphcast agent, and control flow
     pub async fn new(config: &Config) -> RadioOperator {
         debug!("Initializing Radio operator");
-        let _wallet = build_wallet(
-            config
-                .wallet_input()
-                .expect("Operator wallet input invalid"),
+        // Set subscription topic
+        let identifier = subgraph_hash_by_id(
+            config.graph_stack().network_subgraph(),
+            &config.graph_stack().graph_account,
+            &config.message().subgraph_id,
         )
-        .expect("Radio operator cannot build wallet");
+        .await
+        .expect("Failed to match the upgrade intent with an existing subgraph deployment");
 
         debug!("Initializing Graphcast Agent");
         let (agent, _receiver) =
@@ -32,13 +35,9 @@ impl RadioOperator {
                 .await
                 .expect("Initialize Graphcast agent");
         let graphcast_agent = Arc::new(agent);
-        // Provide topics to Graphcast agent
-        let topics = vec![config.message().identifier.clone()];
-        debug!(
-            topics = tracing::field::debug(&topics),
-            "Found content topics for subscription",
-        );
-        graphcast_agent.update_content_topics(topics.clone()).await;
+        graphcast_agent
+            .update_content_topics(vec![identifier])
+            .await;
         debug!("Set global static instance of graphcast_agent");
         _ = GRAPHCAST_AGENT.set(graphcast_agent.clone());
 

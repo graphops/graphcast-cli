@@ -6,11 +6,10 @@ use tracing::info;
 
 use graphcast_sdk::{
     build_wallet,
-    callbook::CallBook,
     graphcast_agent::{
         message_typing::IdentityValidation, GraphcastAgentConfig, GraphcastAgentError,
     },
-    graphql::{client_network::query_network_subgraph, QueryError},
+    graphql::QueryError,
     init_tracing, wallet_address, GraphcastNetworkName, LogFormat,
 };
 
@@ -110,27 +109,6 @@ impl Config {
         )
         .await
     }
-
-    pub async fn basic_info(&self) -> Result<(&str, f32), QueryError> {
-        let my_address = self.graph_stack().graph_account();
-        let my_stake = query_network_subgraph(self.graph_stack().network_subgraph(), my_address)
-            .await
-            .unwrap()
-            .indexer_stake();
-        info!(
-            my_address,
-            my_stake, "Initializing radio operator for indexer identity",
-        );
-        Ok((my_address, my_stake))
-    }
-
-    pub fn callbook(&self) -> CallBook {
-        CallBook::new(
-            self.graph_stack().registry_subgraph.clone(),
-            self.graph_stack().network_subgraph.clone(),
-            None,
-        )
-    }
 }
 
 #[derive(Clone, Debug, Args, Serialize, Deserialize, Getters, Default)]
@@ -140,7 +118,7 @@ pub struct GraphStack {
         long,
         value_name = "GRAPH_ACCOUNT",
         env = "GRAPH_ACCOUNT",
-        help = "Graph account corresponding to Graphcast operator"
+        help = "Graph account corresponding to the operator (must be the subgraph owner of the upgrade intent subgraph)"
     )]
     pub graph_account: String,
     #[clap(
@@ -354,20 +332,6 @@ pub struct Waku {
 pub struct MessageOpt {
     #[clap(
         long,
-        value_name = "IDENTIFIER",
-        env = "IDENTIFIER",
-        help = "Subgraph hash is used to be the message content identifier"
-    )]
-    pub identifier: String,
-    #[clap(
-        long,
-        value_name = "NEW_HASH",
-        env = "NEW_HASH",
-        help = "Subgraph hash for the upgrade version of the subgraph"
-    )]
-    pub new_hash: String,
-    #[clap(
-        long,
         value_name = "SUBGRAPH_ID",
         env = "SUBGRAPH_ID",
         help = "Subgraph id shared by the old and new deployment"
@@ -375,18 +339,11 @@ pub struct MessageOpt {
     pub subgraph_id: String,
     #[clap(
         long,
-        value_name = "INDEX_NETWORK",
-        env = "INDEX_NETWORK",
-        help = "Subgraph id shared by the old and new deployment"
+        value_name = "NEW_HASH",
+        env = "NEW_HASH",
+        help = "Subgraph hash for the upgrade version of the subgraph"
     )]
-    pub index_network: String,
-    #[clap(
-        long,
-        value_name = "MIGRATION_TIME",
-        env = "MIGRATION_TIME",
-        help = "UNIX timestamp that the developer plan on migrating the usage"
-    )]
-    pub migration_time: i64,
+    pub new_hash: String,
     #[clap(long, value_name = "MAX_RETRY", env = "MAX_RETRY", default_value = "5")]
     pub max_retry: u64,
 }
