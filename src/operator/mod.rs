@@ -18,7 +18,7 @@ pub struct RadioOperator {
 impl RadioOperator {
     /// Create a radio operator with radio configurations, persisted data,
     /// graphcast agent, and control flow
-    pub async fn new(config: &Config) -> RadioOperator {
+    pub async fn new(config: &Config, agent: GraphcastAgent) -> RadioOperator {
         debug!("Initializing Radio operator");
         // Set subscription topic
         let identifier = subgraph_hash_by_id(
@@ -30,10 +30,6 @@ impl RadioOperator {
         .expect("Failed to match the upgrade intent with an existing subgraph deployment");
 
         debug!("Initializing Graphcast Agent");
-        let (agent, _receiver) =
-            GraphcastAgent::new(config.to_graphcast_agent_config().await.unwrap())
-                .await
-                .expect("Initialize Graphcast agent");
         let graphcast_agent = Arc::new(agent);
         graphcast_agent
             .update_content_topics(vec![identifier])
