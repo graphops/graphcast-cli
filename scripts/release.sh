@@ -2,7 +2,7 @@
 set -e
 set -x
 
-VERSION="$(cargo metadata --quiet --format-version 1 | jq -r '.packages[] | select(.name == "one-shot-cli") | .version')"
+VERSION="$(cargo metadata --quiet --format-version 1 | jq -r '.packages[] | select(.name == "graphcast-cli") | .version')"
 
 if [[ -z "$VERSION" ]]; then
   echo "Usage: $0 <version>"

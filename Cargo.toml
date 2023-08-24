@@ -1,11 +1,11 @@
 [package]
-name = "one-shot-cli"
+name = "graphcast-cli"
 version = "0.0.1"
 edition = "2021"
 authors = ["GraphOps (axiomatic-aardvark, hopeyen)"]
-description = "CLI to send one message using Graphcast SDK"
+description = "CLI to participate in Graphcast network"
 license = "Apache-2.0"
-repository = "https://github.com/graphops/one-shot-cli"
+repository = "https://github.com/graphops/graphcast-cli"
 keywords = ["graphprotocol", "data-integrity", "Indexer", "waku", "p2p"]
 categories = ["network-programming", "web-programming::http-client"]
 

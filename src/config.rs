@@ -15,8 +15,8 @@ use graphcast_sdk::{
 
 #[derive(Clone, Debug, Parser, Serialize, Deserialize, Getters, Default)]
 #[clap(
-    name = "one-shot-messenger",
-    about = "Send a message to Graphcast network",
+    name = "graphcast-cli",
+    about = "Command line interface for participating in Graphcast",
     author = "GraphOps"
 )]
 pub struct Config {

@@ -1,11 +1,11 @@
-# One shot CLI
+# Graphcast CLI
 
-[![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://docs.graphops.xyz/graphcast/radios/one-shot)
-[![crates.io](https://img.shields.io/crates/v/one-shot-cli.svg)](https://crates.io/crates/one-shot-cli)
+[![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://docs.graphops.xyz/graphcast/radios/graphcast-cli)
+[![crates.io](https://img.shields.io/crates/v/graphcast-cli.svg)](https://crates.io/crates/graphcast-cli)
 
 ## Introduction
 
-This is a Graphcast Radio focused on sending a single message about particular subgraphs on Graphcast P2P network. The available message type is `UpgradeIntentMessage` from a subgraph owner.
+This is a Graphcast CLI tailored for discontinuous participation on the Graphcast P2P network. The available message type is `UpgradeIntentMessage` from a subgraph owner, who can use the CLI to send a single message about subgraphs they own.
 
 ### Upgrade Pre-sync
 

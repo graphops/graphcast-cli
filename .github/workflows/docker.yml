@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BASE_NAME: graphops/one-shot-cli
+  BASE_NAME: graphops/graphcast-cli
 
 jobs:
   build-linux:
