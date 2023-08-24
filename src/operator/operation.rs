@@ -4,14 +4,18 @@ use tracing::{error, info};
 
 use graphcast_sdk::graphcast_agent::GraphcastAgentError;
 
+use crate::config::UpgradePresyncArg;
 use crate::messages::upgrade::UpgradeIntentMessage;
 use crate::operator::RadioOperator;
 
 impl RadioOperator {
-    pub async fn gossip_one_shot(&self) -> Result<String, GraphcastAgentError> {
+    pub async fn gossip_one_shot(
+        &self,
+        args: &UpgradePresyncArg,
+    ) -> Result<String, GraphcastAgentError> {
         // configure radio config to parse in a subcommand for the radio payload message?
-        let new_hash = self.config.message().new_hash.clone();
-        let subgraph_id = self.config.message().subgraph_id.clone();
+        let new_hash = args.new_hash.to_string();
+        let subgraph_id = args.subgraph_id.to_string();
         let time = Utc::now().timestamp();
         let graph_account = self.config.graph_stack().graph_account.clone();
         let identifier = subgraph_hash_by_id(

@@ -22,8 +22,14 @@ To send a message on Graphcast mainnet for the subgraph deployment "QmacQnSgia4i
 ```
 cargo run -- --private-key "abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg1" \
 --graph-account "0xe9a1cabd57700b17945fd81feefba82340d9568f" \
---new-hash "QmVVfLWowm1xkqc41vcygKNwFUvpsDSMbHdHghxmDVmH9x" \
+upgrade-presync --new-hash "QmVVfLWowm1xkqc41vcygKNwFUvpsDSMbHdHghxmDVmH9x" \
 --subgraph-id "CnJMdCkW3pr619gsJVtUPAWxspALPdCMw6o7obzYBNp3"
+```
+
+or assuming environmental variables are used for graph-account and private-key, simply use
+
+```
+cargo run upgrade-presync --subgraph-id CnJMdCkW3pr619gsJVtUPAWxspALPdCMw6o7obzYBNp3 --new-hash QmVVfLWowm1xkqc41vcygKNwFUvpsDSMbHdHghxmDVmH9x
 ```
 
 The entire process from running the binary to sending the message should take ~45 seconds. One can expect the terminal to output the following:
