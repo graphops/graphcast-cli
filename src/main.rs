@@ -1,8 +1,8 @@
 use std::sync::mpsc;
 
 use dotenv::dotenv;
+use graphcast_cli::{config::Config, operator::RadioOperator, RADIO_OPERATOR};
 use graphcast_sdk::{graphcast_agent::GraphcastAgent, WakuMessage};
-use one_shot_cli::{config::Config, operator::RadioOperator, RADIO_OPERATOR};
 
 #[tokio::main]
 async fn main() {

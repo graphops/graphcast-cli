@@ -2106,6 +2106,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "graphcast-cli"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "async-graphql",
+ "cargo-husky",
+ "chrono",
+ "clap",
+ "derive-getters",
+ "dotenv",
+ "ethers",
+ "ethers-contract",
+ "ethers-core 2.0.8",
+ "ethers-derive-eip712",
+ "graphcast-sdk",
+ "once_cell",
+ "prost",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "graphcast-sdk"
 version = "0.4.1"
 source = "git+https://github.com/graphops/graphcast-sdk#e6235ab8986fb4ec6ee705c4b7b3a9f432efdd62"
@@ -3013,31 +3038,6 @@ name = "once_cell"
 version = "1.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dd8b5dd2ae5ed71462c540258bedcb51965123ad7e7ccf4b9a8cafaa4a63576d"
-
-[[package]]
-name = "one-shot-cli"
-version = "0.0.1"
-dependencies = [
- "anyhow",
- "async-graphql",
- "cargo-husky",
- "chrono",
- "clap",
- "derive-getters",
- "dotenv",
- "ethers",
- "ethers-contract",
- "ethers-core 2.0.8",
- "ethers-derive-eip712",
- "graphcast-sdk",
- "once_cell",
- "prost",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "tracing",
-]
 
 [[package]]
 name = "opaque-debug"
