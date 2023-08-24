@@ -1,4 +1,4 @@
-use clap::{Args, Parser};
+use clap::{Args, Parser, Subcommand};
 use derive_getters::Getters;
 use ethers::signers::WalletError;
 use serde::{Deserialize, Serialize};
@@ -13,7 +13,7 @@ use graphcast_sdk::{
     init_tracing, wallet_address, GraphcastNetworkName, LogFormat,
 };
 
-#[derive(Clone, Debug, Parser, Serialize, Deserialize, Getters, Default)]
+#[derive(Clone, Debug, Parser, Serialize, Deserialize, Getters)]
 #[clap(
     name = "graphcast-cli",
     about = "Command line interface for participating in Graphcast",
@@ -26,8 +26,16 @@ pub struct Config {
     pub waku: Waku,
     #[command(flatten)]
     pub radio_infrastructure: RadioInfrastructure,
-    #[command(flatten)]
-    pub message: MessageOpt,
+    #[clap(subcommand)]
+    pub subcommand: Commands,
+    #[clap(
+        long,
+        value_name = "MAX_RETRY",
+        env = "MAX_RETRY",
+        help = "Number of tries for the subcommand",
+        default_value = "5"
+    )]
+    pub max_retry: u64,
     #[arg(
         short,
         value_name = "config_file",
@@ -84,7 +92,7 @@ impl Config {
             network_subgraph = tracing::field::debug(&self.graph_stack().network_subgraph.clone()),
             graphcast_network =
                 tracing::field::debug(self.radio_infrastructure().graphcast_network.to_string()),
-            max_retry = self.message().max_retry,
+            max_retry = self.max_retry,
             "Creating Graphcast Agent",
         );
 
@@ -327,9 +335,17 @@ pub struct Waku {
     pub filter_protocol: Option<bool>,
 }
 
+#[derive(Clone, Debug, Subcommand, Serialize, Deserialize)]
+pub enum Commands {
+    #[clap(aliases = ["presync"], about = "Send a UpgradeIntent message for a subgraph",
+    long_about = "A subgraph developer can send a gossip to inform indexers the new version of a subgraph before publishing
+    ")]
+    UpgradePresync(UpgradePresyncArg),
+}
+
 #[derive(Clone, Debug, Args, Serialize, Deserialize, Default)]
 #[group(required = true, multiple = true)]
-pub struct MessageOpt {
+pub struct UpgradePresyncArg {
     #[clap(
         long,
         value_name = "SUBGRAPH_ID",
@@ -344,8 +360,6 @@ pub struct MessageOpt {
         help = "Subgraph hash for the upgrade version of the subgraph"
     )]
     pub new_hash: String,
-    #[clap(long, value_name = "MAX_RETRY", env = "MAX_RETRY", default_value = "5")]
-    pub max_retry: u64,
 }
 
 #[derive(Debug, thiserror::Error)]

@@ -1,7 +1,10 @@
 use std::sync::mpsc;
 
 use dotenv::dotenv;
-use graphcast_cli::{config::Config, operator::RadioOperator, RADIO_OPERATOR};
+use graphcast_cli::{
+    config::{Commands, Config},
+    operator::RadioOperator,
+};
 use graphcast_sdk::{graphcast_agent::GraphcastAgent, WakuMessage};
 
 #[tokio::main]
@@ -18,11 +21,12 @@ async fn main() {
     )
     .await
     .expect("Initialize Graphcast agent");
-    // Initialization and pass in for static lifetime throughout the program
+
     let radio_operator = RadioOperator::new(&radio_config, agent).await;
 
-    _ = RADIO_OPERATOR.set(radio_operator);
-
-    // Start radio operations
-    RADIO_OPERATOR.get().unwrap().run().await;
+    match radio_config.subcommand() {
+        Commands::UpgradePresync(args) => {
+            radio_operator.upgrade_presync(args).await;
+        }
+    };
 }
