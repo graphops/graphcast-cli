@@ -28,6 +28,7 @@ ethers-contract = "2.0.4"
 ethers-core = "2.0.4"
 ethers-derive-eip712 = "1.0.2"
 async-graphql = "4.0.16"
+reqwest = "0.11.20"
 
 [dev-dependencies.cargo-husky]
 version = "1"
