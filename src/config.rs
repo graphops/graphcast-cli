@@ -48,7 +48,6 @@ pub struct Config {
 impl Config {
     /// Parse config arguments
     pub fn args() -> Self {
-        // TODO: load config file before parse (maybe add new level of subcommands)
         let config = Config::parse();
         std::env::set_var("RUST_LOG", config.radio_infrastructure().log_level.clone());
         // Enables tracing under RUST_LOG variable
@@ -341,6 +340,10 @@ pub enum Commands {
     long_about = "A subgraph developer can send a gossip to inform indexers the new version of a subgraph before publishing
     ")]
     UpgradePresync(UpgradePresyncArg),
+    #[clap(aliases = ["status"], about = "Query indexing status of a subgraph deployment at allocated indexers at the current deployment of subgraph id",
+    long_about = "A subgraph developer quickly query the indexing status of a deployment (new_hash) at public status APIs of indexers actively allocated to the subgraph_id 
+    ")]
+    IndexingStatus(IndexingStatusArg),
 }
 
 #[derive(Clone, Debug, Args, Serialize, Deserialize, Default)]
@@ -358,6 +361,27 @@ pub struct UpgradePresyncArg {
         value_name = "NEW_HASH",
         env = "NEW_HASH",
         help = "Subgraph hash for the upgrade version of the subgraph"
+    )]
+    pub new_hash: String,
+}
+
+//TODO: Add network to support multi-network queries, currently just take the
+//the first chain at indexing status returned by allocated indexers
+#[derive(Clone, Debug, Args, Serialize, Deserialize, Default)]
+#[group(required = true, multiple = true)]
+pub struct IndexingStatusArg {
+    #[clap(
+        long,
+        value_name = "SUBGRAPH_ID",
+        env = "SUBGRAPH_ID",
+        help = "Subgraph id shared by the old and new deployment"
+    )]
+    pub subgraph_id: String,
+    #[clap(
+        long,
+        value_name = "NEW_HASH",
+        env = "NEW_HASH",
+        help = "Subgraph deployment hash for the upgrade version of the subgraph"
     )]
     pub new_hash: String,
 }
