@@ -76,8 +76,6 @@ impl RadioOperator {
 /// Query the new deployment indexing status at public status endpoints registered
 /// by the indexers who are actively allocating the current deployment
 pub async fn indexing_status(config: &Config, args: &IndexingStatusArg) {
-    let _current_attempt: u64 = 0;
-
     // Get list of public status APIs
     let public_status_apis = query_indexer_public_api(&config.graph_stack().network_subgraph, &args.subgraph_id).await
         .expect("Could not query public status APIs from indexers actively allocated on the network subgraph");
