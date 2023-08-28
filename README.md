@@ -13,9 +13,11 @@ When developers publish a new version (subgraph deployment) to their subgraph, d
 
 Indexers running the subgraph radio and listening to that channel will in turn receive the message and potentially start to offchain new deployment.
 
-It is still at the subgraph developers' discretion to await for the indexers to sync upto chainhead, in which point they can publish the staged version without disrupting API usage.
+It is still at the subgraph developers' discretion to await for the indexers to sync upto chainhead, in which point they can publish the staged version without disrupting API usage. This tool provides a convinence function that allows subgraph developer to ....
 
 ## 🆙 Example usage
+
+### UpgradePresync
 
 To send a message on Graphcast mainnet for the subgraph deployment "QmacQnSgia4iDPWHpeY6aWxesRFdb8o5DKZUx96zZqEWrB", we would need its subgraph id "CnJMdCkW3pr619gsJVtUPAWxspALPdCMw6o7obzYBNp3", private key to the graph account or an operator of the graph account, the subgraph owner's graph account, and the new deployment hash. You can supply them as an CLI argument
 
@@ -40,6 +42,15 @@ The entire process from running the binary to sending the message should take ~4
 2023-07-31T17:56:59.328490Z  INFO Sent message, msg_id: "0xc6b1131e0f8302abe48057f6fc69722ab46bd4285c2c4a8a8bdca6b221dcda96"
 ```
 
+### IndexingStatus
+
+After sending `UpgradeIntentMessage`, a developer can periodically check the indexing status of the new subgraph deployment at the public APIs of the indexers who actively allocates on the current version of the subgraph.
+
+Same arguments here can be used as the argument for `UpgradeIntentMessage`. However, gossips are not involved in this operation and the queries are made through deterministic queries. 
+
+```
+cargo run indexing-status --subgraph-id "0x00000444e5a1a667663b0adfd853e8efa0470698-0" --new-hash QmfDJFYaDX7BdwT6rYa8Bx71vPjTueUVDN99pdwFgysDiZ
+```
 
 ## 🧪 Testing
 

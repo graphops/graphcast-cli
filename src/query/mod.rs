@@ -1,7 +1,9 @@
-use graphcast_sdk::graphql::QueryError;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+use std::time::Duration;
 use tracing::{debug, trace};
+
+use graphcast_sdk::graphql::QueryError;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IndexerUrl {
@@ -157,6 +159,7 @@ pub async fn query_indexing_status(
         .post(status_endpoint)
         .header("Content-Type", "application/json")
         .json(&query)
+        .timeout(Duration::from_secs(10))
         .send()
         .await?;
     trace!("response: {:#?}", &response);
